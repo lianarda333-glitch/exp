@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инструменты куратора | Микро-анализ</title>
+    <style>
+        /* === ШРИФТЫ И БАЗА === */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap');
+
+        :root {
+            /* Палитра "Архив / Чертеж" */
+            --bg-color: #F4F4F0;       /* Цвет белой стены / старой бумаги */
+            --panel-bg: #FFFFFF;       /* Чистый лист */
+            --text-main: #1A1A1A;      /* Черный печатный */
+            --text-secondary: #555555; /* Серый текст */
+            
+            /* Акценты */
+            --accent-blue: #2C5F8D;    /* Технический синий (чертежи) */
+            --accent-yellow: #E8D590;  /* Приглушенный желтый (этикетки) */
+            --border-color: #D1D1D1;   /* Тонкие линии */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Merriweather', serif; /* Основной текст - антиква */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* === ЗАГОЛОВОК (МУЗЕЙНАЯ ЭКСПЛИКАЦИЯ) === */
+        header {
+            text-align: left;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 20px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif; /* Заголовки - гротеск */
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            background: var(--accent-yellow);
+            padding: 5px 10px;
+            display: inline-block;
+        }
+
+        .task-description {
+            font-size: 1.05em;
+            color: var(--text-secondary);
+            max-width: 800px;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .task-description strong {
+            color: var(--text-main);
+            font-style: italic;
+        }
+
+        /* === СЕТКА === */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 320px 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            align-items: start;
+        }
+
+        /* === КОЛОНКИ ВЫСТАВОК === */
+        .exhibition-col {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .exhibition-header {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+        }
+
+        .exhibition-number {
+            background: var(--text-main);
+            color: #fff;
+            padding: 2px 8px;
+            font-size: 0.8em;
+        }
+
+        .exhibition-logic {
+            font-size: 0.7em;
+            color: var(--accent-blue);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .image-frame {
+            width: 100%;
+            height: 350px;
+            background: #EAEAEA;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: grayscale(20%); /* Легкий архивный эффект */
+        }
+
+        /* Музейная этикетка */
+        .museum-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75em;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .image-frame:hover .museum-label {
+            transform: translateY(0);
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .label-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .label-key {
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .label-value {
+            color: var(--text-main);
+        }
+
+        .label-value.inverse {
+            color: var(--accent-blue);
+            font-style: italic;
+        }
+
+        /* === ПАНЕЛЬ УПРАВЛЕНИЯ (ИНСТРУМЕНТЫ) === */
+        .controls-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px 25px;
+            position: sticky;
+            top: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .panel-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1.5px;
+            color: var(--accent-blue);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-yellow);
+            text-align: center;
+        }
+
+        .slider-group {
+            margin-bottom: 35px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+
+        .slider-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        .slider-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            color: var(--accent-blue);
+            font-weight: 600;
+            background: #F0F4F8;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .slider-desc {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Стилизация ползунков (Технический стиль) */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--accent-blue);
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 2;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(44, 95, 141, 0.4);
+        }
+
+        /* Линии-подсказки под ползунком */
+        .slider-ticks {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        /* === ПОДВАЛ === */
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent-blue);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .controls-panel {
+                order: -1;
+                position: relative;
+                top: 0;
+                margin-bottom: 30px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <h1>Инструменты куратора</h1>
+            <span class="subtitle">Практическое задание №1</span>
+        </div>
+        <div class="task-description">
+            <strong>Четыре кита экспозиции.</strong> Мы проанализируем четыре параметра на примере двух выставок.
+            <br><br>
+            <em>Обратите внимание: Выставка А реагирует на ползунки напрямую, Выставка Б — инверсивно (100 − значение).</em>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- ВЫСТАВКА А -->
+        <div class="exhibition-col">
+            <div class="exhibition-header">
+                <span>Выставка А</span>
+                <span class="exhibition-number">01</span>
+            </div>
+            <div class="image-frame">
+                <img id="imgA" src="https://via.placeholder.com/600x400/eeeeee/333333?text=EXHIBITION+A" alt="Выставка А">
+                <div class="museum-label" id="labelA">
+                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightA" class="label-value">Нейтральный</span></div>
+                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallA" class="label-value">Белые</span></div>
+                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textA" class="label-value">Стандарт</span></div>
+                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathA" class="label-value">Линейный</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПАНЕЛЬ УПРАВЛЕНИЯ -->
+        <div class="controls-panel">
+            <div class="panel-title">Параметры</div>
+            
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">01. Свет</label>
+                    <span class="slider-value" id="val-lighting">50</span>
+                </div>
+                <span class="slider-desc">Заливной ↔ Точечный</span>
+                <input type="range" id="lighting" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>Мягкий</span>
+                    <span>Жесткий</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">02. Стены</label>
+                    <span class="slider-value" id="val-walls">50</span>
+                </div>
+                <span class="slider-desc">Нейтральный ↔ Активный</span>
+                <input type="range" id="walls" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>White Cube</span>
+                    <span>Цвет</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">03. Текст</label>
+                    <span class="slider-value" id="val-text">50</span>
+                </div>
+                <span class="slider-desc">На стене ↔ В буклете</span>
+                <input type="range" id="text" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>Явный</span>
+                    <span>Скрытый</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">04. Маршрут</label>
+                    <span class="slider-value" id="val-path">50</span>
+                </div>
+                <span class="slider-desc">Жесткий ↔ Свободный</span>
+                <input type="range" id="path" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>Коридор</span>
+                    <span>Лабиринт</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВЫСТАВКА Б -->
+        <div class="exhibition-col">
+            <div class="exhibition-header">
+                <span>Выставка Б</span>
+                <span class="exhibition-number">02</span>
+            </div>
+            <div class="image-frame">
+                <img id="imgB" src="https://via.placeholder.com/600x400/eeeeee/333333?text=EXHIBITION+B" alt="Выставка Б">
+                <div class="museum-label" id="labelB">
+                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightB" class="label-value inverse">Нейтральный</span></div>
+                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallB" class="label-value inverse">Белые</span></div>
+                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textB" class="label-value inverse">Стандарт</span></div>
+                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathB" class="label-value inverse">Линейный</span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            АНАЛИЗ
+        </div>
+        <div class="footer-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            ЗАПИСЬ
+        </div>
+    </footer>
+
+    <script>
+        // === БАЗА ДАННЫХ ИЗОБРАЖЕНИЙ ===
+        // Замените ссылки на реальные фото экспозиций
+        const imagesDB = {
+            A: {
+                low: 'images/img1.png',
+                mid: 'images/img2.png',
+                high: 'images/img3.png'
+            },
+            B: {
+                low: 'images/img4.png',
+                mid: 'images/img1.png',
+                high: 'images/img2.png'
+            }
+        };
+
+        // === ТЕКСТОВЫЕ ОПИСАНИЯ ДЛЯ ЭТИКЕТОК ===
+        const textLabels = {
+            lighting: { low: 'Заливной', mid: 'Смешанный', high: 'Точечный' },
+            walls: { low: 'Нейтральные', mid: 'Пастель', high: 'Активные' },
+            text: { low: 'На стене', mid: 'Комби', high: 'В буклете' },
+            path: { low: 'Жесткий', mid: 'Гибкий', high: 'Свободный' }
+        };
+
+        // === ЭЛЕМЕНТЫ ===
+        const sliders = {
+            lighting: document.getElementById('lighting'),
+            walls: document.getElementById('walls'),
+            text: document.getElementById('text'),
+            path: document.getElementById('path')
+        };
+
+        const displays = {
+            lighting: document.getElementById('val-lighting'),
+            walls: document.getElementById('val-walls'),
+            text: document.getElementById('val-text'),
+            path: document.getElementById('val-path')
+        };
+
+        const imgA = document.getElementById('imgA');
+        const imgB = document.getElementById('imgB');
+
+        // Функция определения уровня (low, mid, high) на основе значения 0-100
+        function getLevel(value) {
+            if (value < 33) return 'low';
+            if (value < 66) return 'mid';
+            return 'high';
+        }
+
+        // Обновление текстовых этикеток
+        function updateLabels(exhibition, values, isInverted = false) {
+            const prefix = exhibition === 'A' ? 'txt-lightA' : 'txt-lightB';
+            
+            for (let key in values) {
+                // Для Выставки Б инвертируем значение
+                const displayValue = isInverted ? (100 - values[key]) : values[key];
+                const level = getLevel(displayValue);
+                
+                const elementId = exhibition === 'A' 
+                    ? `txt-${key === 'lighting' ? 'light' : key === 'walls' ? 'wall' : key === 'text' ? 'text' : 'path'}A`
+                    : `txt-${key === 'lighting' ? 'light' : key === 'walls' ? 'wall' : key === 'text' ? 'text' : 'path'}B`;
+                
+                document.getElementById(elementId).textContent = textLabels[key][level];
+            }
+        }
+
+        // === ОСНОВНАЯ ЛОГИКА ===
+        function updateExhibitions() {
+            const values = {};
+            
+            // 1. Считываем значения ползунков
+            for (let key in sliders) {
+                values[key] = parseInt(sliders[key].value);
+                displays[key].textContent = values[key];
+            }
+
+            // ============================================
+            // ВЫСТАВКА А: Прямое значение (value = slider)
+            // ============================================
+            const avgA = (values.lighting + values.walls + values.text + values.path) / 4;
+            const levelA = getLevel(avgA);
+            imgA.src = imagesDB.A[levelA];
+            
+            // Визуальный эффект для А: яркость от света, оттенок от стен
+            const brightnessA = 0.7 + (values.lighting / 200);
+            const hueRotateA = (values.walls - 50) * 1.5;
+            imgA.style.filter = `brightness(${brightnessA}) hue-rotate(${hueRotateA}deg)`;
+            
+            updateLabels('A', values, false);
+
+            // ============================================
+            // ВЫСТАВКА Б: Инверсивное значение (100 - slider)
+            // ============================================
+            const invertedValues = {
+                lighting: 100 - values.lighting,
+                walls: 100 - values.walls,
+                text: 100 - values.text,
+                path: 100 - values.path
+            };
+            
+            const avgB = (invertedValues.lighting + invertedValues.walls + invertedValues.text + invertedValues.path) / 4;
+            const levelB = getLevel(avgB);
+            imgB.src = imagesDB.B[levelB];
+
+            // Визуальный эффект для Б: инверсия яркости, размытие от пути
+            const brightnessB = 0.7 + (invertedValues.lighting / 200);
+            const blurB = (invertedValues.path > 66) ? 2 : 0;
+            imgB.style.filter = `brightness(${brightnessB}) blur(${blur}px)`;
+
+            updateLabels('B', values, true);
+        }
+
+        // === СЛУШАТЕЛИ СОБЫТИЙ ===
+        for (let key in sliders) {
+            sliders[key].addEventListener('input', updateExhibitions);
+        }
+
+        // Запуск при загрузке
+        updateExhibitions();
+    </script>
+</body>
+</html>
