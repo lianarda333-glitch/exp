@@ -9,16 +9,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap');
 
         :root {
-            /* Палитра "Архив / Чертеж" */
-            --bg-color: #F4F4F0;       /* Цвет белой стены / старой бумаги */
-            --panel-bg: #FFFFFF;       /* Чистый лист */
-            --text-main: #1A1A1A;      /* Черный печатный */
-            --text-secondary: #555555; /* Серый текст */
-            
-            /* Акценты */
-            --accent-blue: #2C5F8D;    /* Технический синий (чертежи) */
-            --accent-yellow: #E8D590;  /* Приглушенный желтый (этикетки) */
-            --border-color: #D1D1D1;   /* Тонкие линии */
+            --bg-color: #F4F4F0;
+            --panel-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-secondary: #555555;
+            --accent-blue: #2C5F8D;
+            --accent-yellow: #E8D590;
+            --border-color: #D1D1D1;
         }
 
         * {
@@ -26,7 +23,7 @@
         }
 
         body {
-            font-family: 'Merriweather', serif; /* Основной текст - антиква */
+            font-family: 'Merriweather', serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
@@ -38,7 +35,6 @@
             line-height: 1.6;
         }
 
-        /* === ЗАГОЛОВОК (МУЗЕЙНАЯ ЭКСПЛИКАЦИЯ) === */
         header {
             text-align: left;
             width: 100%;
@@ -58,7 +54,7 @@
         }
 
         h1 {
-            font-family: 'Inter', sans-serif; /* Заголовки - гротеск */
+            font-family: 'Inter', sans-serif;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -1px;
@@ -94,7 +90,6 @@
             font-style: italic;
         }
 
-        /* === СЕТКА === */
         .main-container {
             display: grid;
             grid-template-columns: 1fr 320px 1fr;
@@ -104,7 +99,6 @@
             align-items: start;
         }
 
-        /* === КОЛОНКИ ВЫСТАВОК === */
         .exhibition-col {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -132,13 +126,6 @@
             font-size: 0.8em;
         }
 
-        .exhibition-logic {
-            font-size: 0.7em;
-            color: var(--accent-blue);
-            font-weight: 400;
-            font-style: italic;
-        }
-
         .image-frame {
             width: 100%;
             height: 350px;
@@ -155,10 +142,8 @@
             height: 100%;
             object-fit: cover;
             transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            filter: grayscale(20%); /* Легкий архивный эффект */
         }
 
-        /* Музейная этикетка */
         .museum-label {
             position: absolute;
             bottom: 0;
@@ -202,7 +187,6 @@
             font-style: italic;
         }
 
-        /* === ПАНЕЛЬ УПРАВЛЕНИЯ (ИНСТРУМЕНТЫ) === */
         .controls-panel {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -263,7 +247,6 @@
             display: block;
         }
 
-        /* Стилизация ползунков (Технический стиль) */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
@@ -272,7 +255,6 @@
             border-radius: 2px;
             outline: none;
             cursor: pointer;
-            position: relative;
         }
 
         input[type=range]::-webkit-slider-thumb {
@@ -283,8 +265,6 @@
             background: #fff;
             cursor: pointer;
             transition: all 0.2s;
-            position: relative;
-            z-index: 2;
         }
 
         input[type=range]::-webkit-slider-thumb:hover {
@@ -292,7 +272,6 @@
             box-shadow: 0 0 10px rgba(44, 95, 141, 0.4);
         }
 
-        /* Линии-подсказки под ползунком */
         .slider-ticks {
             display: flex;
             justify-content: space-between;
@@ -303,7 +282,6 @@
             text-transform: uppercase;
         }
 
-        /* === ПОДВАЛ === */
         footer {
             margin-top: 60px;
             padding-top: 20px;
@@ -331,7 +309,7 @@
             fill: var(--accent-blue);
         }
 
-        /* Адаптивность */
+        /* === МОБИЛЬНАЯ АДАПТАЦИЯ === */
         @media (max-width: 900px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -343,7 +321,28 @@
                 margin-bottom: 30px;
             }
             h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
+            }
+            .image-frame {
+                height: 250px;
+            }
+            .museum-label {
+                transform: translateY(0);
+                position: relative;
+                background: rgba(255, 255, 255, 1);
+            }
+            input[type=range]::-webkit-slider-thumb {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.3em;
+            }
+            .image-frame {
+                height: 200px;
             }
         }
     </style>
@@ -371,12 +370,12 @@
                 <span class="exhibition-number">01</span>
             </div>
             <div class="image-frame">
-                <img id="imgA" src="images/2.png" alt="Выставка А">
+                <img id="imgA" src="" alt="Выставка А">
                 <div class="museum-label" id="labelA">
-                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightA" class="label-value">Нейтральный</span></div>
-                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallA" class="label-value">Белые</span></div>
-                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textA" class="label-value">Стандарт</span></div>
-                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathA" class="label-value">Линейный</span></div>
+                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightA" class="label-value">-</span></div>
+                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallA" class="label-value">-</span></div>
+                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textA" class="label-value">-</span></div>
+                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathA" class="label-value">-</span></div>
                 </div>
             </div>
         </div>
@@ -445,12 +444,12 @@
                 <span class="exhibition-number">02</span>
             </div>
             <div class="image-frame">
-                <img id="imgB" src="images/1.png" alt="Выставка Б">
+                <img id="imgB" src="" alt="Выставка Б">
                 <div class="museum-label" id="labelB">
-                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightB" class="label-value inverse">Нейтральный</span></div>
-                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallB" class="label-value inverse">Белые</span></div>
-                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textB" class="label-value inverse">Стандарт</span></div>
-                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathB" class="label-value inverse">Линейный</span></div>
+                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightB" class="label-value inverse">-</span></div>
+                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallB" class="label-value inverse">-</span></div>
+                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textB" class="label-value inverse">-</span></div>
+                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathB" class="label-value inverse">-</span></div>
                 </div>
             </div>
         </div>
@@ -470,26 +469,24 @@
 
     <script>
         // === БАЗА ДАННЫХ ИЗОБРАЖЕНИЙ ===
-        // Замените ссылки на реальные фото экспозиций
+        // Положите картинки 1.png и 4.png в папку images/
         const imagesDB = {
             A: {
-                low: 'images/1.png',
-                mid: 'images/2.png',
-                high: 'images/3.png'
+                bright: 'images/1.png',   // Свет > 50
+                dim: 'images/4.png'       // Свет <= 50
             },
             B: {
-                low: 'images/4.png',
-                mid: 'images/1.png',
-                high: 'images/2.png'
+                bright: 'images/1.png',   // Инверсия: когда у А dim
+                dim: 'images/4.png'       // Инверсия: когда у А bright
             }
         };
 
-        // === ТЕКСТОВЫЕ ОПИСАНИЯ ДЛЯ ЭТИКЕТОК ===
+        // === ТЕКСТОВЫЕ ОПИСАНИЯ ===
         const textLabels = {
-            lighting: { low: 'Заливной', mid: 'Смешанный', high: 'Точечный' },
-            walls: { low: 'Нейтральные', mid: 'Пастель', high: 'Активные' },
-            text: { low: 'На стене', mid: 'Комби', high: 'В буклете' },
-            path: { low: 'Жесткий', mid: 'Гибкий', high: 'Свободный' }
+            lighting: { low: 'Заливной', high: 'Точечный' },
+            walls: { low: 'Нейтральные', high: 'Активные' },
+            text: { low: 'На стене', high: 'В буклете' },
+            path: { low: 'Жесткий', high: 'Свободный' }
         };
 
         // === ЭЛЕМЕНТЫ ===
@@ -510,22 +507,28 @@
         const imgA = document.getElementById('imgA');
         const imgB = document.getElementById('imgB');
 
-        // Функция определения уровня (low, mid, high) на основе значения 0-100
-        function getLevel(value) {
-            if (value < 33) return 'low';
-            if (value < 66) return 'mid';
-            return 'high';
+        // === ЛОГИКА ВЫБОРА КАРТИНКИ (СВЕТ) ===
+        function getLightImage(exhibition, lightingValue) {
+            if (exhibition === 'A') {
+                // Выставка А: прямое значение
+                return lightingValue > 50 ? imagesDB.A.bright : imagesDB.A.dim;
+            } else {
+                // Выставка Б: обратное значение (инверсия)
+                return lightingValue > 50 ? imagesDB.B.dim : imagesDB.B.bright;
+            }
         }
 
-        // Обновление текстовых этикеток
-        function updateLabels(exhibition, values, isInverted = false) {
-            const prefix = exhibition === 'A' ? 'txt-lightA' : 'txt-lightB';
+        // === ОБНОВЛЕНИЕ ТЕКСТОВЫХ ЭТИКЕТОК ===
+        function updateLabels(exhibition, values) {
+            const isInverse = exhibition === 'B';
             
             for (let key in values) {
-                // Для Выставки Б инвертируем значение
-                const displayValue = isInverted ? (100 - values[key]) : values[key];
-                const level = getLevel(displayValue);
+                let displayValue = values[key];
+                if (isInverse) {
+                    displayValue = 100 - values[key];
+                }
                 
+                const level = displayValue > 50 ? 'high' : 'low';
                 const elementId = exhibition === 'A' 
                     ? `txt-${key === 'lighting' ? 'light' : key === 'walls' ? 'wall' : key === 'text' ? 'text' : 'path'}A`
                     : `txt-${key === 'lighting' ? 'light' : key === 'walls' ? 'wall' : key === 'text' ? 'text' : 'path'}B`;
@@ -534,7 +537,7 @@
             }
         }
 
-        // === ОСНОВНАЯ ЛОГИКА ===
+        // === ОСНОВНАЯ ФУНКЦИЯ ===
         function updateExhibitions() {
             const values = {};
             
@@ -544,40 +547,17 @@
                 displays[key].textContent = values[key];
             }
 
-            // ============================================
-            // ВЫСТАВКА А: Прямое значение (value = slider)
-            // ============================================
-            const avgA = (values.lighting + values.walls + values.text + values.path) / 4;
-            const levelA = getLevel(avgA);
-            imgA.src = imagesDB.A[levelA];
+            // 2. Выставка А: Свет > 50 → 1.png, иначе 4.png
+            const imgSrcA = getLightImage('A', values.lighting);
+            imgA.src = imgSrcA;
             
-            // Визуальный эффект для А: яркость от света, оттенок от стен
-            const brightnessA = 0.7 + (values.lighting / 200);
-            const hueRotateA = (values.walls - 50) * 1.5;
-            imgA.style.filter = `brightness(${brightnessA}) hue-rotate(${hueRotateA}deg)`;
-            
-            updateLabels('A', values, false);
+            // 3. Выставка Б: Инверсия (когда у А 1.png, у Б 4.png и наоборот)
+            const imgSrcB = getLightImage('B', values.lighting);
+            imgB.src = imgSrcB;
 
-            // ============================================
-            // ВЫСТАВКА Б: Инверсивное значение (100 - slider)
-            // ============================================
-            const invertedValues = {
-                lighting: 100 - values.lighting,
-                walls: 100 - values.walls,
-                text: 100 - values.text,
-                path: 100 - values.path
-            };
-            
-            const avgB = (invertedValues.lighting + invertedValues.walls + invertedValues.text + invertedValues.path) / 4;
-            const levelB = getLevel(avgB);
-            imgB.src = imagesDB.B[levelB];
-
-            // Визуальный эффект для Б: инверсия яркости, размытие от пути
-            const brightnessB = 0.7 + (invertedValues.lighting / 200);
-            const blurB = (invertedValues.path > 66) ? 2 : 0;
-            imgB.style.filter = `brightness(${brightnessB}) blur(${blur}px)`;
-
-            updateLabels('B', values, true);
+            // 4. Обновляем текстовые этикетки
+            updateLabels('A', values);
+            updateLabels('B', values);
         }
 
         // === СЛУШАТЕЛИ СОБЫТИЙ ===
@@ -590,5 +570,3 @@
     </script>
 </body>
 </html>
-
-
