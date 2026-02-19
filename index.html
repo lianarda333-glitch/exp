@@ -92,7 +92,7 @@
 
         .main-container {
             display: grid;
-            grid-template-columns: 1fr 280px 1fr;
+            grid-template-columns: 1fr 320px 1fr;
             gap: 30px;
             width: 100%;
             max-width: 1200px;
@@ -128,7 +128,7 @@
 
         .image-frame {
             width: 100%;
-            height: 400px;
+            height: 350px;
             background: #EAEAEA;
             position: relative;
             overflow: hidden;
@@ -231,11 +231,11 @@
 
         .slider-value {
             font-family: 'Inter', sans-serif;
-            font-size: 1em;
+            font-size: 0.8em;
             color: var(--accent-blue);
             font-weight: 600;
             background: #F0F4F8;
-            padding: 4px 10px;
+            padding: 2px 6px;
             border-radius: 3px;
         }
 
@@ -259,8 +259,8 @@
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border: 2px solid var(--accent-blue);
             background: #fff;
             cursor: pointer;
@@ -275,20 +275,11 @@
         .slider-ticks {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 8px;
             font-family: 'Inter', sans-serif;
             font-size: 0.7em;
             color: #999;
             text-transform: uppercase;
-        }
-
-        .slider-range-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 5px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.65em;
-            color: var(--accent-blue);
         }
 
         footer {
@@ -333,7 +324,7 @@
                 font-size: 1.5em;
             }
             .image-frame {
-                height: 280px;
+                height: 250px;
             }
             .museum-label {
                 transform: translateY(0);
@@ -341,8 +332,8 @@
                 background: rgba(255, 255, 255, 1);
             }
             input[type=range]::-webkit-slider-thumb {
-                width: 28px;
-                height: 28px;
+                width: 24px;
+                height: 24px;
             }
         }
 
@@ -351,7 +342,7 @@
                 font-size: 1.3em;
             }
             .image-frame {
-                height: 220px;
+                height: 200px;
             }
         }
     </style>
@@ -364,9 +355,9 @@
             <span class="subtitle">Практическое задание №1</span>
         </div>
         <div class="task-description">
-            <strong>Четыре кита экспозиции.</strong> Мы проанализируем параметр <em>«Освещение»</em> на примере двух выставок.
+            <strong>Четыре кита экспозиции.</strong> Мы проанализируем четыре параметра на примере двух выставок.
             <br><br>
-            <em>Обратите внимание: Выставка А и Выставка Б реагируют на ползунок по-разному. Двигайте регулятор и наблюдайте за изменениями.</em>
+            <em>Обратите внимание: Выставка А реагирует на ползунки напрямую, Выставка Б — инверсивно (100 − значение).</em>
         </div>
     </header>
 
@@ -380,40 +371,68 @@
             </div>
             <div class="image-frame">
                 <img id="imgA" src="" alt="Выставка А">
-                <div class="museum-label">
-                    <div class="label-row">
-                        <span class="label-key">Освещение:</span> 
-                        <span id="txt-lightA" class="label-value">-</span>
-                    </div>
-                    <div class="label-row">
-                        <span class="label-key">Диапазон:</span> 
-                        <span id="rangeA" class="label-value">-</span>
-                    </div>
+                <div class="museum-label" id="labelA">
+                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightA" class="label-value">-</span></div>
+                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallA" class="label-value">-</span></div>
+                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textA" class="label-value">-</span></div>
+                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathA" class="label-value">-</span></div>
                 </div>
             </div>
         </div>
 
         <!-- ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <div class="controls-panel">
-            <div class="panel-title">Параметр</div>
+            <div class="panel-title">Параметры</div>
             
             <div class="slider-group">
                 <div class="slider-header">
-                    <label class="slider-label">01. Освещение</label>
+                    <label class="slider-label">01. Свет</label>
                     <span class="slider-value" id="val-lighting">50</span>
                 </div>
                 <span class="slider-desc">Заливной ↔ Точечный</span>
                 <input type="range" id="lighting" min="0" max="100" value="50">
                 <div class="slider-ticks">
-                    <span>0</span>
-                    <span>30</span>
-                    <span>50</span>
-                    <span>80</span>
-                    <span>100</span>
-                </div>
-                <div class="slider-range-labels">
                     <span>Мягкий</span>
                     <span>Жесткий</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">02. Стены</label>
+                    <span class="slider-value" id="val-walls">50</span>
+                </div>
+                <span class="slider-desc">Нейтральный ↔ Активный</span>
+                <input type="range" id="walls" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>White Cube</span>
+                    <span>Цвет</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">03. Текст</label>
+                    <span class="slider-value" id="val-text">50</span>
+                </div>
+                <span class="slider-desc">На стене ↔ В буклете</span>
+                <input type="range" id="text" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>Явный</span>
+                    <span>Скрытый</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <label class="slider-label">04. Маршрут</label>
+                    <span class="slider-value" id="val-path">50</span>
+                </div>
+                <span class="slider-desc">Жесткий ↔ Свободный</span>
+                <input type="range" id="path" min="0" max="100" value="50">
+                <div class="slider-ticks">
+                    <span>Коридор</span>
+                    <span>Лабиринт</span>
                 </div>
             </div>
         </div>
@@ -426,15 +445,11 @@
             </div>
             <div class="image-frame">
                 <img id="imgB" src="" alt="Выставка Б">
-                <div class="museum-label">
-                    <div class="label-row">
-                        <span class="label-key">Освещение:</span> 
-                        <span id="txt-lightB" class="label-value inverse">-</span>
-                    </div>
-                    <div class="label-row">
-                        <span class="label-key">Диапазон:</span> 
-                        <span id="rangeB" class="label-value inverse">-</span>
-                    </div>
+                <div class="museum-label" id="labelB">
+                    <div class="label-row"><span class="label-key">Свет:</span> <span id="txt-lightB" class="label-value inverse">-</span></div>
+                    <div class="label-row"><span class="label-key">Стены:</span> <span id="txt-wallB" class="label-value inverse">-</span></div>
+                    <div class="label-row"><span class="label-key">Текст:</span> <span id="txt-textB" class="label-value inverse">-</span></div>
+                    <div class="label-row"><span class="label-key">Путь:</span> <span id="txt-pathB" class="label-value inverse">-</span></div>
                 </div>
             </div>
         </div>
@@ -454,83 +469,101 @@
 
     <script>
         // === БАЗА ДАННЫХ ИЗОБРАЖЕНИЙ ===
-        // Положите картинки 1.png, 2.png, 3.png, 4.png в папку images/
+        // Положите картинки 1.png и 4.png в папку images/
         const imagesDB = {
             A: {
-                range1: 'images/4.png',   // 0-30
-                range2: 'images/1.png',   // 31-50
-                range3: 'images/3.png',   // 51-80
-                range4: 'images/2.png'    // 81-100
+                bright: 'images/1.png',   // Свет > 50
+                dim: 'images/4.png'       // Свет <= 50
             },
             B: {
-                range1: 'images/2.png',   // 0-30
-                range2: 'images/3.png',   // 31-50
-                range3: 'images/1.png',   // 51-80
-                range4: 'images/4.png'    // 81-100
+                bright: 'images/1.png',   // Инверсия: когда у А dim
+                dim: 'images/4.png'       // Инверсия: когда у А bright
             }
         };
 
-        // === ТЕКСТОВЫЕ ОПИСАНИЯ ДИАПАЗОНОВ ===
-        const rangeLabels = {
-            range1: '0–30 (Мягкий свет)',
-            range2: '31–50 (Средний)',
-            range3: '51–80 (Насыщенный)',
-            range4: '81–100 (Яркий)'
+        // === ТЕКСТОВЫЕ ОПИСАНИЯ ===
+        const textLabels = {
+            lighting: { low: 'Заливной', high: 'Точечный' },
+            walls: { low: 'Нейтральные', high: 'Активные' },
+            text: { low: 'На стене', high: 'В буклете' },
+            path: { low: 'Жесткий', high: 'Свободный' }
         };
 
         // === ЭЛЕМЕНТЫ ===
-        const sliderLighting = document.getElementById('lighting');
-        const displayLighting = document.getElementById('val-lighting');
+        const sliders = {
+            lighting: document.getElementById('lighting'),
+            walls: document.getElementById('walls'),
+            text: document.getElementById('text'),
+            path: document.getElementById('path')
+        };
+
+        const displays = {
+            lighting: document.getElementById('val-lighting'),
+            walls: document.getElementById('val-walls'),
+            text: document.getElementById('val-text'),
+            path: document.getElementById('val-path')
+        };
+
         const imgA = document.getElementById('imgA');
         const imgB = document.getElementById('imgB');
-        const txtLightA = document.getElementById('txt-lightA');
-        const txtLightB = document.getElementById('txt-lightB');
-        const rangeA = document.getElementById('rangeA');
-        const rangeB = document.getElementById('rangeB');
 
-        // === ОПРЕДЕЛЕНИЕ ДИАПАЗОНА ===
-        function getRange(value) {
-            if (value <= 30) return 'range1';
-            if (value <= 50) return 'range2';
-            if (value <= 80) return 'range3';
-            return 'range4';
+        // === ЛОГИКА ВЫБОРА КАРТИНКИ (СВЕТ) ===
+        function getLightImage(exhibition, lightingValue) {
+            if (exhibition === 'A') {
+                // Выставка А: прямое значение
+                return lightingValue > 50 ? imagesDB.A.bright : imagesDB.A.dim;
+            } else {
+                // Выставка Б: обратное значение (инверсия)
+                return lightingValue > 50 ? imagesDB.B.dim : imagesDB.B.bright;
+            }
+        }
+
+        // === ОБНОВЛЕНИЕ ТЕКСТОВЫХ ЭТИКЕТОК ===
+        function updateLabels(exhibition, values) {
+            const isInverse = exhibition === 'B';
+            
+            for (let key in values) {
+                let displayValue = values[key];
+                if (isInverse) {
+                    displayValue = 100 - values[key];
+                }
+                
+                const level = displayValue > 50 ? 'high' : 'low';
+                const elementId = exhibition === 'A' 
+                    ? `txt-${key === 'lighting' ? 'light' : key === 'walls' ? 'wall' : key === 'text' ? 'text' : 'path'}A`
+                    : `txt-${key === 'lighting' ? 'light' : key === 'walls' ? 'wall' : key === 'text' ? 'text' : 'path'}B`;
+                
+                document.getElementById(elementId).textContent = textLabels[key][level];
+            }
         }
 
         // === ОСНОВНАЯ ФУНКЦИЯ ===
         function updateExhibitions() {
-            const value = parseInt(sliderLighting.value);
-            displayLighting.textContent = value;
-
-            // Определяем диапазон для Выставки А (прямое значение)
-            const rangeA_Key = getRange(value);
+            const values = {};
             
-            // Для Выставки Б — обратный порядок диапазонов
-            // range1 (0-30) у А → range4 у Б
-            // range2 (31-50) у А → range3 у Б
-            // range3 (51-80) у А → range2 у Б
-            // range4 (81-100) у А → range1 у Б
-            const rangeB_Map = {
-                'range1': 'range4',
-                'range2': 'range3',
-                'range3': 'range2',
-                'range4': 'range1'
-            };
-            const rangeB_Key = rangeB_Map[rangeA_Key];
+            // 1. Считываем значения ползунков
+            for (let key in sliders) {
+                values[key] = parseInt(sliders[key].value);
+                displays[key].textContent = values[key];
+            }
 
-            // Устанавливаем изображения
-            imgA.src = imagesDB.A[rangeA_Key];
-            imgB.src = imagesDB.B[rangeB_Key];
-
-            // Обновляем текстовые этикетки
-            txtLightA.textContent = rangeLabels[rangeA_Key];
-            txtLightB.textContent = rangeLabels[rangeB_Key];
+            // 2. Выставка А: Свет > 50 → 1.png, иначе 4.png
+            const imgSrcA = getLightImage('A', values.lighting);
+            imgA.src = imgSrcA;
             
-            rangeA.textContent = rangeA_Key;
-            rangeB.textContent = rangeB_Key;
+            // 3. Выставка Б: Инверсия (когда у А 1.png, у Б 4.png и наоборот)
+            const imgSrcB = getLightImage('B', values.lighting);
+            imgB.src = imgSrcB;
+
+            // 4. Обновляем текстовые этикетки
+            updateLabels('A', values);
+            updateLabels('B', values);
         }
 
-        // === СЛУШАТЕЛЬ СОБЫТИЙ ===
-        sliderLighting.addEventListener('input', updateExhibitions);
+        // === СЛУШАТЕЛИ СОБЫТИЙ ===
+        for (let key in sliders) {
+            sliders[key].addEventListener('input', updateExhibitions);
+        }
 
         // Запуск при загрузке
         updateExhibitions();
